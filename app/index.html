@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    We are using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+  </body>
+  <div id="app">
+    {{message}}
+    <ul>
+      <li v-for="font in fontList">
+        <span :style="{fontFamily:font}">{{font}}</span>
+      </li>
+    </ul>
+  </div>
+  <script>
+    require('babel-register')
+    // You can also require other files to run in this process
+    require('./renderer.js')
+  </script>
+
+</html>
