@@ -100,6 +100,7 @@ const SystemFonts = function(options = {}) {
             directories = [
                 ...directories,
                 path.join(home, 'Library', 'Fonts'),
+                path.join('/', 'System', 'Library', 'Fonts'),
                 path.join('/', 'Library', 'Fonts'),
                 path.join('/','System','Library','Assets','com_apple_MobileAsset_Font3'),
                 // path.join('/','Users','tannoshota','Dropbox','RightFont')

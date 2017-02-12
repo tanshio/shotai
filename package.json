@@ -24,6 +24,7 @@
     "eslint": "^3.15.0",
     "font-manager": "^0.2.2",
     "fontkit": "^1.5.2",
+    "lodash": "^4.17.4",
     "system-font-families": "^1.0.0",
     "vue-color": "^2.0.5",
     "vuedraggable": "^2.8.3-rc0"

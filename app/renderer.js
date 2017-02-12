@@ -11,6 +11,8 @@ console.log(fontList)
 
 let fontFamilies = new Set()
 
+fontFamilies.add('-apple-system')
+
 let vue;
 
 
@@ -122,15 +124,39 @@ async function Main(){
     },
     data: {
       message: 'Hello Vue.js!',
-      fontList: [...fontFamilies],
+      fontList: [...fontFamilies].sort(),
       text:"text",
       colors: defaultProps,
       grid: false,
       fontSize: "16",
-      unit: "px"
+      unit: "px",
+      lineHeight: "",
+      lhUnit: "normal",
+      letterSpacing: "",
+      lsUnit: "normal",
+      fontWeight: "normal",
+      filterText: ""
+    },
+    computed: {
+      isLHNormal(){
+        return this.lhUnit === 'normal' ? true : false;
+      },
+      isLSNormal(){
+        return this.lsUnit === 'normal' ? true : false;
+      },
+      filterProducts() {
+        let filterText = this.filterText;
+        return this.fontList.filter(function(font) {
+          var re = new RegExp(filterText,'i')
+          return re.test(font)
+        })
+        // return this.fontList.slice(0, 3);
+      }
+
     },
     methods: {
-      onChange (val) {
+
+      onChangeColor (val) {
         console.log(val)
         document.documentElement.style.setProperty('--text-color', `rgba(${val.rgba.r},${val.rgba.g},${val.rgba.b},${val.rgba.a})`);
         this.colors = val

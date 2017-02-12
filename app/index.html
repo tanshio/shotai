@@ -7,6 +7,8 @@
     <style>
       :root {
         --text-color: #000;
+        --text-size: 16px;
+        --line-height: normal;
       }
       * {
         box-sizing: border-box;
@@ -30,18 +32,21 @@
       }
       header textarea {
         width: 100%;
-        margin-bottom: 16px;
       }
       main {
         flex: 1;
         height: 100vh;
-        overflow: auto;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
       }
 
       .list {
         list-style-type: none;
         padding: 0;
         margin: 0;
+        flex: 1;
+        overflow: auto;
       }
       .list li {
         padding: 2rem;
@@ -58,6 +63,39 @@
         color: #999;
         font-weight: normal;
       }
+      label {
+        display: block;
+      }
+      label:not(:first-of-type) {
+        margin-top: 1rem;
+      }
+      input[disabled]{
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .filter {
+        width: 100%;
+        position: relative;
+        font-size: 16px;
+        flex: none;
+      }
+      .filter:before {
+        content: "🔍";
+        position: absolute;
+        top: 50%;
+        left: .5em;
+        transform: translateY(-50%);
+      }
+      .filter input {
+        width: 100%;
+        padding: .75em .75em .75em 3em;
+      }
+
+      .vue-color__chrome {
+        margin-top: 1rem;
+      }
+
     </style>
   </head>
   <body>
@@ -66,26 +104,82 @@
       <header>
         <h1>書体</h1>
         <div>
+
+          <label>text</label>
+          <textarea v-model="text"></textarea>
+
+          <label>font-size</label>
           <input type="number" v-model="fontSize">
           <select v-model="unit">
             <option value="px">px</option>
             <option value="em">em</option>
-            <option value="rem">rem</option>
+            <!-- <option value="rem">rem</option> -->
             <option value="%">%</option>
             <option value="vh">vh</option>
             <option value="vw">vw</option>
+            <option value="vmax">vmax</option>
+            <option value="vmin">vmin</option>
           </select>
-          <textarea v-model="text"></textarea>
+
+          <label>line-height</label>
+          <input type="number" v-model="lineHeight" v-bind:disabled="isLHNormal">
+          <select v-model="lhUnit">
+            <option value="normal">normal</option>
+            <option value="px">px</option>
+            <option value="em">em</option>
+            <!-- <option value="rem">rem</option> -->
+            <option value="%">%</option>
+            <option value="vh">vh</option>
+            <option value="vw">vw</option>
+            <option value="vmax">vmax</option>
+            <option value="vmin">vmin</option>
+          </select>
+
+          <label>letter-spacing</label>
+          <input type="number" v-model="letterSpacing" v-bind:disabled="isLSNormal">
+          <select v-model="lsUnit">
+            <option value="normal">normal</option>
+            <option value="px">px</option>
+            <option value="em">em</option>
+            <!-- <option value="rem">rem</option> -->
+            <option value="%">%</option>
+            <option value="vh">vh</option>
+            <option value="vw">vw</option>
+            <option value="vmax">vmax</option>
+            <option value="vmin">vmin</option>
+          </select>
+
+          <label>font-weight</label>
+          <select v-model="fontWeight">
+            <option value="normal">normal</option>
+            <option value="bold">bold</option>
+            <option value="lighter">lighter</option>
+            <option value="bolder">bolder</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
+            <option value="600">600</option>
+            <option value="700">700</option>
+            <option value="800">800</option>
+            <option value="900">900</option>
+          </select>
+
         </div>
 
 
-        <chrome-picker v-model="colors" @change-color="onChange"></chrome-picker>
+        <chrome-picker v-model="colors" @change-color="onChangeColor"></chrome-picker>
       </header>
       <main>
+        <div class="filter">
+          <input type="text" v-model="filterText">
+        </div>
+
         <ul :class="grid?grid:'list'">
-          <li v-for="font in fontList">
+          <li v-for="font in filterProducts">
             <h2>{{font}}</h2>
-            <span :style='{fontFamily:font,fontSize:fontSize+unit}'>{{text?text:font}}</span>
+            <span :style='{fontFamily:font+",sans-serif",fontSize:fontSize+unit, lineHeight:lineHeight+lhUnit, letterSpacing:letterSpacing+lsUnit, fontWeight:fontWeight}'>{{text?text:font}}</span>
           </li>
         </ul>
       </main>
